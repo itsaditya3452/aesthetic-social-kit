@@ -6,8 +6,12 @@ import {
   Type, Hash, Copy, Check, Wand2, Image as ImageIcon, Film, X,
   Gauge, Instagram, Music2, Youtube, Flame, BookOpen, Lightbulb,
   Rocket, MessageCircle, Share2, ShoppingBag, Mic, Camera, MonitorPlay,
-  Loader2
+  Loader2, Map, Gift
 } from 'lucide-react';
+import TravelRouteAnimator from './TravelRouteAnimator';
+import BirthdayGiftMaker from './BirthdayGiftMaker';
+import BirthdayGiftViewer from './BirthdayGiftViewer';
+import { decodeGiftPayload } from '../lib/giftLink';
 
 /* ========================================================================= */
 /* FONT LOADING                                                              */
@@ -1331,12 +1335,34 @@ function ToolButton({ icon: Icon, label, onClick }) {
 /* ========================================================================= */
 const TABS = [
   { key: 'story', label: 'Story Engine', icon: ImageIcon },
+  { key: 'route', label: 'Route Animator', icon: Map },
+  { key: 'gift', label: 'Birthday Gift', icon: Gift },
   { key: 'script', label: 'Script Builder', icon: Clapperboard },
   { key: 'caption', label: 'Caption Studio', icon: Type },
 ];
 
+function useIncomingGift() {
+  const [gift, setGift] = useState(null);
+
+  useEffect(() => {
+    const hash = window.location.hash || '';
+    if (hash.startsWith('#gift=')) {
+      const encoded = hash.slice('#gift='.length);
+      const decoded = decodeGiftPayload(encoded);
+      if (decoded) setGift(decoded);
+    }
+  }, []);
+
+  return { gift };
+}
+
 export default function AestheticSocialKitApp() {
   const [activeTab, setActiveTab] = useState('story');
+  const { gift } = useIncomingGift();
+
+  if (gift) {
+    return <BirthdayGiftViewer gift={gift} />;
+  }
 
   return (
     <div
@@ -1356,11 +1382,11 @@ export default function AestheticSocialKitApp() {
             Aesthetic Social Kit
           </h1>
           <p className="text-[#6B665C] mt-2 max-w-xl mx-auto sm:mx-0">
-            Animated story assets, a viral psychology script engine, and a full engagement dashboard — all on one screen.
+            Animated story assets, travel route videos, a viral script engine, and a full engagement dashboard — all on one screen.
           </p>
         </header>
 
-        <nav className="flex gap-2 mb-8 bg-white/50 backdrop-blur-sm border border-[#E4DFD3] rounded-2xl p-1.5 max-w-xl mx-auto sm:mx-0 overflow-x-auto shadow-sm">
+        <nav className="flex gap-2 mb-8 bg-white/50 backdrop-blur-sm border border-[#E4DFD3] rounded-2xl p-1.5 max-w-2xl mx-auto sm:mx-0 overflow-x-auto shadow-sm">
           {TABS.map((tab) => {
             const Icon = tab.icon;
             const active = activeTab === tab.key;
@@ -1380,6 +1406,8 @@ export default function AestheticSocialKitApp() {
 
         <main className="bg-white/40 backdrop-blur-sm border border-[#E4DFD3] rounded-3xl p-5 sm:p-8 shadow-sm">
           {activeTab === 'story' && <StoryGenerator />}
+          {activeTab === 'route' && <TravelRouteAnimator />}
+          {activeTab === 'gift' && <BirthdayGiftMaker />}
           {activeTab === 'script' && <ScriptBuilder />}
           {activeTab === 'caption' && <CaptionStudio />}
         </main>
