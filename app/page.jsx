@@ -1,102 +1,120 @@
-import AestheticSocialKitApp from '../components/AestheticSocialKitApp';
+import Link from 'next/link';
+import { Image as ImageIcon, Map, Gift, Clapperboard, Type, ArrowRight, Sparkles } from 'lucide-react';
+import ToolNav from '../components/ToolNav';
+import FaqSection from '../components/FaqSection';
+import HomeGiftFallbackViewer from '../components/HomeGiftFallbackViewer';
 
-export default function Page() {
+const HUB_TOOLS = [
+  {
+    href: '/instagram-story-maker',
+    icon: ImageIcon,
+    title: 'Instagram Story Maker',
+    desc: 'Animated Birthday, Quote, and Travel story templates. Export in HD, no login.',
+  },
+  {
+    href: '/travel-video-maker',
+    icon: Map,
+    title: 'Travel Route Video Maker',
+    desc: 'Animate a trip on a real map with GPX import and video export — free.',
+  },
+  {
+    href: '/birthday-gift-maker',
+    icon: Gift,
+    title: 'Birthday Gift Maker',
+    desc: 'Animated eCards with a shareable link, no account, no database.',
+  },
+  {
+    href: '/reels-script-generator',
+    icon: Clapperboard,
+    title: 'Reels & TikTok Script Generator',
+    desc: 'Timestamped viral scripts with hooks, storyboard, and CTAs.',
+  },
+  {
+    href: '/instagram-caption-generator',
+    icon: Type,
+    title: 'Instagram Caption Generator',
+    desc: 'Fancy fonts, hashtag stacks, and a live Viral Potential Score.',
+  },
+];
+
+export default function HomePage() {
   return (
-    <>
-      <AestheticSocialKitApp />
+    <div
+      className="min-h-screen w-full bg-[#F5F1E8]"
+      style={{ fontFamily: '"Space Grotesk", system-ui, sans-serif' }}
+    >
+      <HomeGiftFallbackViewer />
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10">
+        <header className="mb-8 text-center sm:text-left">
+          <div className="inline-flex items-center gap-2 rounded-full bg-white/70 backdrop-blur-sm border border-[#E4DFD3] px-4 py-1.5 mb-4 shadow-sm">
+            <Sparkles size={14} className="text-[#A8909E]" />
+            <span className="text-xs font-medium text-[#5B6B57] tracking-wide">PRO SUITE · ZERO BACKEND · RUNS FULLY IN-BROWSER</span>
+          </div>
+          <h1
+            className="text-4xl sm:text-5xl font-semibold text-[#2B2A28] tracking-tight"
+            style={{ fontFamily: '"Fraunces", serif' }}
+          >
+            Aesthetic Social Kit
+          </h1>
+          <p className="text-[#6B665C] mt-2 max-w-xl mx-auto sm:mx-0">
+            Five free creator tools — animated story assets, travel route videos, birthday eCards, a
+            viral script engine, and a full caption dashboard. No login, no backend, no cost.
+          </p>
+        </header>
 
-      {/* Server-rendered, crawlable SEO content. Kept visually minimal and placed
-          below the interactive app so it doesn't compete with the product UI. */}
-      <section className="bg-[#F5F1E8] pb-16">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 space-y-12">
-          <article className="space-y-4">
-            <h2 className="text-2xl font-semibold text-[#2B2A28]" style={{ fontFamily: '"Fraunces", serif' }}>
-              A free Instagram story maker, Reels script generator, and caption studio in one place
-            </h2>
-            <p className="text-[#6B665C] leading-relaxed text-sm">
-              Aesthetic Social Kit is a free, no-login Instagram story maker built for creators who want
-              polished, on-trend content without opening five different apps. Design an animated birthday
-              story, a minimalist quote template, or a travel-vibe cover with a moving Ken Burns effect —
-              then export it as an HD JPG in one click. Every template runs on an HTML5 canvas directly in
-              your browser, so there's nothing to install and nothing ever leaves your device.
-            </p>
-            <p className="text-[#6B665C] leading-relaxed text-sm">
-              Need Reels or TikTok ideas? The built-in viral video script generator turns any topic into a
-              timestamped, shot-by-shot storyboard using a Hook–Retention–CTA framework, with a multi-hook
-              matrix, b-roll cues, on-screen text overlays, and audio/SFX notes for four tones: Controversial
-              Hook, Storytelling/POV, Educational/Value Bomb, and Productivity Hack.
-            </p>
-            <p className="text-[#6B665C] leading-relaxed text-sm">
-              Finally, the caption studio doubles as a full engagement dashboard: format captions with
-              aesthetic line breaks and fancy Unicode fonts (Serif Bold, Sans-Serif Slanted, Double-Struck),
-              generate a niche hashtag stack, preview platform-specific presets for Instagram Reels, TikTok,
-              and YouTube Shorts, and get a live Viral Potential Score with concrete tips before you post.
-            </p>
-          </article>
+        <ToolNav />
 
-          <article className="space-y-4">
-            <h2 className="text-2xl font-semibold text-[#2B2A28]" style={{ fontFamily: '"Fraunces", serif' }}>
-              Frequently asked questions
-            </h2>
-            <div className="space-y-3">
-              <details className="group rounded-xl border border-[#E4DFD3] bg-white/50 p-4 open:bg-white/70 transition">
-                <summary className="cursor-pointer text-sm font-medium text-[#2B2A28] list-none flex justify-between items-center">
-                  Is Aesthetic Social Kit really free to use?
-                  <span className="text-[#8A8578] group-open:rotate-45 transition-transform">+</span>
-                </summary>
-                <p className="text-sm text-[#6B665C] leading-relaxed mt-3">
-                  Yes. Every feature — the animated story generator, the Reels script builder, and the
-                  caption studio — runs entirely in your browser with no login, no signup, and no hidden
-                  paywalls.
-                </p>
-              </details>
-              <details className="group rounded-xl border border-[#E4DFD3] bg-white/50 p-4 open:bg-white/70 transition">
-                <summary className="cursor-pointer text-sm font-medium text-[#2B2A28] list-none flex justify-between items-center">
-                  Do I need to install anything or create an account?
-                  <span className="text-[#8A8578] group-open:rotate-45 transition-transform">+</span>
-                </summary>
-                <p className="text-sm text-[#6B665C] leading-relaxed mt-3">
-                  No installation and no account are required. Open the site and start creating instantly —
-                  nothing is uploaded to a server, so your images and captions stay on your device.
-                </p>
-              </details>
-              <details className="group rounded-xl border border-[#E4DFD3] bg-white/50 p-4 open:bg-white/70 transition">
-                <summary className="cursor-pointer text-sm font-medium text-[#2B2A28] list-none flex justify-between items-center">
-                  What story templates are available?
-                  <span className="text-[#8A8578] group-open:rotate-45 transition-transform">+</span>
-                </summary>
-                <p className="text-sm text-[#6B665C] leading-relaxed mt-3">
-                  Three animated templates are included: Birthday Bash (a floating polaroid frame with
-                  sparkle particles), Minimalist Quote (a cinematic typewriter fade-in with a pulsing
-                  vignette), and Travel Vibe (a Ken Burns zoom-and-pan effect with a sliding location tag).
-                </p>
-              </details>
-              <details className="group rounded-xl border border-[#E4DFD3] bg-white/50 p-4 open:bg-white/70 transition">
-                <summary className="cursor-pointer text-sm font-medium text-[#2B2A28] list-none flex justify-between items-center">
-                  Can it write a full Reels or TikTok script for me?
-                  <span className="text-[#8A8578] group-open:rotate-45 transition-transform">+</span>
-                </summary>
-                <p className="text-sm text-[#6B665C] leading-relaxed mt-3">
-                  Yes. Enter any topic and choose a tone — Controversial Hook, Storytelling/POV,
-                  Educational/Value Bomb, or Productivity Hack — to get a timestamped, shot-by-shot script
-                  with a multi-hook matrix, a b-roll storyboard, and a conversion CTA matrix.
-                </p>
-              </details>
-              <details className="group rounded-xl border border-[#E4DFD3] bg-white/50 p-4 open:bg-white/70 transition">
-                <summary className="cursor-pointer text-sm font-medium text-[#2B2A28] list-none flex justify-between items-center">
-                  How does the Viral Potential Score work?
-                  <span className="text-[#8A8578] group-open:rotate-45 transition-transform">+</span>
-                </summary>
-                <p className="text-sm text-[#6B665C] leading-relaxed mt-3">
-                  The caption studio analyzes length, emoji density, line breaks, hook strength, CTA
-                  placement, and hashtag count in real time, then gives you a percentage score with specific
-                  tips to improve it before you post.
-                </p>
-              </details>
-            </div>
-          </article>
+        <main className="grid sm:grid-cols-2 gap-4">
+          {HUB_TOOLS.map((tool) => {
+            const Icon = tool.icon;
+            return (
+              <Link
+                key={tool.href}
+                href={tool.href}
+                className="group flex flex-col gap-3 rounded-2xl border border-[#E4DFD3] bg-white/50 backdrop-blur-sm p-6 hover:bg-white/80 hover:-translate-y-0.5 hover:shadow-md transition-all duration-300"
+              >
+                <div className="w-11 h-11 rounded-xl bg-[#2B2A28] text-[#F5F1E8] flex items-center justify-center">
+                  <Icon size={20} strokeWidth={1.7} />
+                </div>
+                <h2 className="text-lg font-semibold text-[#2B2A28]" style={{ fontFamily: '"Fraunces", serif' }}>
+                  {tool.title}
+                </h2>
+                <p className="text-sm text-[#6B665C] leading-relaxed">{tool.desc}</p>
+                <span className="mt-auto flex items-center gap-1.5 text-sm font-medium text-[#5B6B57] group-hover:gap-2.5 transition-all">
+                  Open tool <ArrowRight size={15} />
+                </span>
+              </Link>
+            );
+          })}
+        </main>
+
+        <div className="mt-14">
+          <FaqSection
+            heading="About Aesthetic Social Kit"
+            intro={[
+              'Aesthetic Social Kit is a free, no-login suite of five creator tools that all run entirely in your browser — nothing is uploaded to a server, and there\'s no account or subscription required for any feature. Design animated Instagram stories, turn a trip into a route video, send an animated birthday eCard, generate a viral Reels script, or format a high-converting caption — each tool has its own dedicated page linked above.',
+            ]}
+            items={[
+              {
+                q: 'Is Aesthetic Social Kit really free to use?',
+                a: 'Yes. Every tool — the story maker, route animator, birthday gift maker, script generator, and caption studio — runs entirely in your browser with no login, no signup, and no hidden paywalls.',
+              },
+              {
+                q: 'Do I need to install anything or create an account?',
+                a: 'No installation and no account are required for any tool. Open the page and start creating instantly — nothing is uploaded to a server, so your images and text stay on your device.',
+              },
+              {
+                q: 'Which tool should I start with?',
+                a: 'If you just want a quick animated story, start with the Instagram Story Maker. For a trip recap, use the Travel Route Video Maker. For a birthday surprise, use the Birthday Gift Maker.',
+              },
+            ]}
+          />
         </div>
-      </section>
-    </>
+
+        <footer className="text-center text-xs text-[#8A8578] mt-10">
+          No backend, no database — everything runs client-side. Deploy straight to Vercel.
+        </footer>
+      </div>
+    </div>
   );
 }
