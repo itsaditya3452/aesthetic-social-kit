@@ -1,4 +1,5 @@
-import "./globals.css";
+﻿import "./globals.css";
+import Script from "next/script"; // 1. Google Analytics ke liye Next.js Script engine import kiya
 import { SITE_URL, SITE_NAME, SITE_TITLE, SITE_DESCRIPTION, KEYWORDS } from "../lib/siteConfig";
 
 export const metadata = {
@@ -156,6 +157,22 @@ function JsonLd() {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+        {/* 2. Safe Google Analytics Integration bina layout ko chhede */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-ZF1TZYM4KT"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-ZF1TZYM4KT');
+          `}
+        </Script>
+      </head>
       <body>
         <JsonLd />
         {children}
