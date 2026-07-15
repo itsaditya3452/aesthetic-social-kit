@@ -1,0 +1,14 @@
+Drop your Google Search Console verification file directly in this folder (public/).
+
+Example: if Google gave you "google1234567890abcdef.html", save it as:
+  public/google1234567890abcdef.html
+
+Next.js serves everything in /public at the site root automatically, so after you
+deploy it will be reachable at:
+  https://yourdomain.com/google1234567890abcdef.html
+
+That's the exact URL Search Console checks — visit it yourself first to confirm it
+loads before clicking "Verify" in Search Console.
+
+(This placeholder file itself is harmless to leave in the repo — Google only looks
+for the specific filename it gave you.)

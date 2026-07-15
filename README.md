@@ -17,6 +17,8 @@ description, and keyword list.
 | Birthday Gift Maker | `/birthday-gift-maker` | free birthday ecard, virtual birthday gift |
 | Reels & TikTok Script Generator | `/reels-script-generator` | reels script generator, viral hook generator |
 | Instagram Caption Generator | `/instagram-caption-generator` | instagram caption generator, hashtag generator |
+| YouTube Creator Kit | `/youtube-hook-generator` | youtube hook generator, thumbnail ab testing tool |
+| Instagram Grid & Slide Planner | `/instagram-grid-planner` | instagram grid planner, seamless carousel maker |
 
 Navigating between tools uses real `<Link>` navigation (`components/ToolNav.jsx`), so the URL bar updates
 on every click, back/forward buttons work correctly, and each page can be shared, bookmarked, or indexed
@@ -50,6 +52,12 @@ The sitemap picks up new `TOOL_PAGES` entries automatically.
   timestamped storyboard, and a CTA matrix.
 - **Instagram Caption Generator** — aesthetic line breaks, Unicode fonts, a live Viral Potential Score,
   hashtag generator, and platform presets.
+- **YouTube Creator Kit** — a Hook Generator (12 psychology-backed formulas, e.g. Negative Frame,
+  Curiosity Gap, Contrarian Take) plus an A/B Thumbnail & Title Previewer rendered inside a realistic
+  YouTube feed card with a light/dark mode toggle.
+- **Instagram Grid & Slide Planner** — a Reel-to-grid crop previewer (drag directly on the preview or use
+  a slider to choose what lands in the 1:1 profile grid, then export at 1080×1080) plus a seamless
+  carousel draft tool (2–5 slides, a zero-gap "flow check" view, and a real swipeable carousel mock).
 
 ## SEO setup
 - `lib/siteConfig.js` — `SITE_URL` (update before deploying), plus `TOOL_PAGES` for per-page metadata.

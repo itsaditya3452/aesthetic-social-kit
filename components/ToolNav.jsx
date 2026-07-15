@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Image as ImageIcon, Map, Gift, Clapperboard, Type } from 'lucide-react';
+import { Image as ImageIcon, Map, Gift, Clapperboard, Type, Youtube, Grid3x3 } from 'lucide-react';
 
 export const TOOL_ROUTES = [
   { href: '/instagram-story-maker', label: 'Story Engine', icon: ImageIcon },
@@ -11,13 +11,15 @@ export const TOOL_ROUTES = [
   { href: '/birthday-gift-maker', label: 'Birthday Gift', icon: Gift },
   { href: '/reels-script-generator', label: 'Script Builder', icon: Clapperboard },
   { href: '/instagram-caption-generator', label: 'Caption Studio', icon: Type },
+  { href: '/youtube-hook-generator', label: 'YouTube Kit', icon: Youtube },
+  { href: '/instagram-grid-planner', label: 'Grid Planner', icon: Grid3x3 },
 ];
 
 export default function ToolNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="flex gap-2 mb-8 bg-white/50 backdrop-blur-sm border border-[#E4DFD3] rounded-2xl p-1.5 max-w-3xl mx-auto sm:mx-0 overflow-x-auto shadow-sm">
+    <nav className="flex gap-2 mb-8 bg-white/50 backdrop-blur-sm border border-[#E4DFD3] rounded-2xl p-1.5 max-w-5xl mx-auto sm:mx-0 overflow-x-auto shadow-sm">
       {TOOL_ROUTES.map((route) => {
         const Icon = route.icon;
         const active = pathname === route.href;

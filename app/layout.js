@@ -1,5 +1,4 @@
-﻿import "./globals.css";
-import Script from "next/script"; // 1. Google Analytics ke liye Next.js Script engine import kiya
+import "./globals.css";
 import { SITE_URL, SITE_NAME, SITE_TITLE, SITE_DESCRIPTION, KEYWORDS } from "../lib/siteConfig";
 
 export const metadata = {
@@ -53,6 +52,12 @@ export const metadata = {
   },
   icons: {
     icon: '/icon',
+  },
+  // Google Search Console — meta tag verification method.
+  // Paste the "content" value from your Search Console HTML tag here (just the code, not the whole tag).
+  // Leave empty/remove if you're using the HTML file method instead (see /public folder).
+  verification: {
+    google: '', // e.g. 'aBcD1234EfGh5678...'
   },
 };
 
@@ -157,22 +162,6 @@ function JsonLd() {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <head>
-        {/* 2. Safe Google Analytics Integration bina layout ko chhede */}
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-ZF1TZYM4KT"
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-
-            gtag('config', 'G-ZF1TZYM4KT');
-          `}
-        </Script>
-      </head>
       <body>
         <JsonLd />
         {children}

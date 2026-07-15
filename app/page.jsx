@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Image as ImageIcon, Map, Gift, Clapperboard, Type, ArrowRight, Sparkles } from 'lucide-react';
+import { Image as ImageIcon, Map, Gift, Clapperboard, Type, Youtube, Grid3x3, ArrowRight, Sparkles } from 'lucide-react';
 import ToolNav from '../components/ToolNav';
 import FaqSection from '../components/FaqSection';
 import HomeGiftFallbackViewer from '../components/HomeGiftFallbackViewer';
@@ -34,6 +34,18 @@ const HUB_TOOLS = [
     icon: Type,
     title: 'Instagram Caption Generator',
     desc: 'Fancy fonts, hashtag stacks, and a live Viral Potential Score.',
+  },
+  {
+    href: '/youtube-hook-generator',
+    icon: Youtube,
+    title: 'YouTube Creator Kit',
+    desc: 'Psychology-backed hook formulas plus an A/B thumbnail & title previewer.',
+  },
+  {
+    href: '/instagram-grid-planner',
+    icon: Grid3x3,
+    title: 'Instagram Grid & Slide Planner',
+    desc: 'Drag-to-adjust Reel-to-grid crop preview, plus a seamless carousel draft tool.',
   },
 ];
 
