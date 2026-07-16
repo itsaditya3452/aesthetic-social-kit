@@ -73,11 +73,82 @@ The sitemap picks up new `TOOL_PAGES` entries automatically.
 3. In Search Console, request indexing for each of the 6 URLs individually the first time — it speeds
    up discovery of the new pages.
 
+## IndexNow (instant indexing for Bing, Yandex, and other participating engines)
+
+IndexNow is a separate, much faster path than sitemaps: instead of waiting for a crawler to come back,
+you push the URL directly to the search engine the moment it changes. Google doesn't participate in
+IndexNow (Search Console + sitemap is still how you reach Google), but Bing, Yandex, Seznam.cz, and
+Naver do.
+
+### How it's wired up
+| File | Purpose |
+|---|---|
+| `lib/indexNowConfig.js` | Holds `INDEXNOW_KEY`. A working default key ships out of the box. |
+| `app/[key]/route.js` | Serves `https://yourdomain.com/<KEY>.txt` — the verification file search engines fetch to confirm you own the site. Any other `*.txt` request correctly 404s here. |
+| `app/api/indexnow/route.js` | `POST` endpoint — send it `{ "urls": [...] }` and it forwards the submission to the real IndexNow API, with input validation and clear error messages for the 400/403/422/429 cases. |
+| `scripts/submit-indexnow.mjs` | A ready-to-run script that submits the homepage + all tool pages in one call. |
+| `.env.local.example` | Documents `INDEXNOW_KEY` and `INDEXNOW_SUBMIT_SECRET`. |
+
+### The key file — why `app/[key]/route.js` and not `app/[key].txt/route.js`
+Next.js dynamic segments can't mix literal characters with brackets in a folder name — `[key].txt` as a
+folder name isn't valid App Router syntax. The fix used here is just as exact: a single dynamic segment
+(`[key]`) captures the **entire** path segment, dots included. So a request for
+`/ea7a587bf0d4aa44bea0e98e94b7c4b8.txt` arrives with `params.key` equal to that whole string, and the
+route handler compares it against `${INDEXNOW_KEY}.txt` before responding. Next.js still resolves static
+routes (like `/instagram-story-maker`) ahead of this dynamic catch-all at the same level, so there's no
+conflict with any other page.
+
+### Setting your own key (recommended before going live)
+```bash
+node -e "console.log(require('crypto').randomBytes(16).toString('hex'))"
+```
+Put the result in `.env.local` (copy `.env.local.example` first) and in your Vercel project's
+**Settings → Environment Variables**:
+```
+INDEXNOW_KEY=your-generated-key
+```
+
+### Securing the submission endpoint
+Without `INDEXNOW_SUBMIT_SECRET` set, `POST /api/indexnow` is open to anyone — fine for local testing,
+not for production, since a stranger could waste your submission quota. Set a secret before deploying:
+```
+INDEXNOW_SUBMIT_SECRET=some-long-random-string
+```
+Then every request must include a matching header:
+```
+x-indexnow-secret: some-long-random-string
+```
+
+### Testing locally
+```bash
+npm run dev
+# in another terminal:
+curl http://localhost:3000/<your-key>.txt
+# → should print your raw key, content-type: text/plain; charset=utf-8
+
+curl -X POST http://localhost:3000/api/indexnow \
+  -H "Content-Type: application/json" \
+  -d '{"urls":["https://yourdomain.com/instagram-story-maker"]}'
+```
+Note: IndexNow verifies your key file over the **public internet**, so a submission tested from
+`localhost` will fail at the "IndexNow could not verify your key file" step even if everything is
+wired correctly — that check only succeeds once `SITE_URL` is live and deployed.
+
+### Triggering it in production
+Once deployed with the right `SITE_URL`, `INDEXNOW_KEY`, and `INDEXNOW_SUBMIT_SECRET`:
+```bash
+INDEXNOW_SUBMIT_SECRET=your-secret npm run indexnow
+```
+This submits every page on the site in one call. Run it manually after any content update, or wire it
+into your deploy process — e.g. a GitHub Action step after a successful Vercel deploy, or a
+`postbuild`/deploy-hook script that calls the same `curl` command shown above with your production URLs.
+
 ## Run locally
 ```bash
 npm install
 npm run dev
 ```
+
 Open http://localhost:3000
 
 ## Push to GitHub
