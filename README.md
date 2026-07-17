@@ -19,6 +19,11 @@ description, and keyword list.
 | Instagram Caption Generator | `/instagram-caption-generator` | instagram caption generator, hashtag generator |
 | YouTube Creator Kit | `/youtube-hook-generator` | youtube hook generator, thumbnail ab testing tool |
 | Instagram Grid & Slide Planner | `/instagram-grid-planner` | instagram grid planner, seamless carousel maker |
+| Link in Bio Builder | `/bio-link-builder` | link in bio free, linktree alternative |
+| Media Kit Generator | `/media-kit-generator` | influencer media kit generator, rate card generator |
+| Rate Calculator | `/influencer-rate-calculator` | influencer rate calculator, engagement rate calculator |
+| *(public bio pages)* | `/bio/[username]` | dynamic — one per creator who uses the Bio Link Builder |
+| Instagram Grid & Slide Planner | `/instagram-grid-planner` | instagram grid planner, seamless carousel maker |
 
 Navigating between tools uses real `<Link>` navigation (`components/ToolNav.jsx`), so the URL bar updates
 on every click, back/forward buttons work correctly, and each page can be shared, bookmarked, or indexed
@@ -58,6 +63,48 @@ The sitemap picks up new `TOOL_PAGES` entries automatically.
 - **Instagram Grid & Slide Planner** — a Reel-to-grid crop previewer (drag directly on the preview or use
   a slider to choose what lands in the 1:1 profile grid, then export at 1080×1080) plus a seamless
   carousel draft tool (2–5 slides, a zero-gap "flow check" view, and a real swipeable carousel mock).
+- **Link in Bio Builder** — a free Linktree/Beacons alternative. Pick a username, add links and a theme,
+  and get a live shareable page at `/bio/<username>`. The only tool in the suite backed by a database
+  (Supabase), since a public shareable page has to live somewhere — see the setup section below.
+- **Media Kit Generator** — a downloadable, canvas-rendered stats sheet for brand pitches: photo, live
+  engagement-rate calculation, audience breakdown, brand tags, and optional rate cards.
+- **Influencer Rate Calculator** — engagement rate plus a transparent, clearly-labeled starting-point
+  sponsorship rate estimate by niche, for a feed post, Reel, carousel, and story.
+
+## Link in Bio setup (the one tool that needs a database)
+
+Every other tool needs nothing configured. This one needs a free Supabase project because a public,
+shareable bio page has to be stored *somewhere* to have a stable URL.
+
+### 1. Run the schema once
+In your Supabase project, open **SQL Editor → New query**, paste the contents of `supabase/schema.sql`,
+and run it. It creates the `bio_pages` table plus two `SECURITY DEFINER` functions
+(`get_bio_page_for_edit`, `save_bio_page`) that let visitors create and edit *only their own* page using
+a locally-generated "edit key" — there's no login system, so this is the mechanism that stands in for one.
+Full reasoning is in the comments at the top of that file.
+
+### 2. Add your API credentials
+From your Supabase project's **Settings → API**, copy the Project URL and the `anon`/`publishable` key,
+then set:
+```
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your-publishable-key
+```
+in `.env.local` (copy `.env.local.example` first) and in Vercel's **Settings → Environment Variables**.
+These are meant to be public — that's what "publishable" means — the SQL from step 1 is what actually
+protects the data, not keeping this key secret.
+
+### 3. How editing works without a login system
+The first time someone saves a username, a random edit key is generated in their browser and stored in
+`localStorage`. Saving again from the same browser reuses it automatically. On a new device, they enter
+their username plus that same edit key. It's genuinely private (the key column is never exposed to public
+reads — see the schema comments), but it's not the same guarantee as real authentication, and that
+tradeoff is intentional for a free, no-login tool.
+
+### Testing note
+I couldn't reach `supabase.co` from the sandbox this was built in, so the Next.js/React code around this
+feature is fully built and the site builds cleanly with it included, but the actual save → database →
+public-page round trip needs to be tested by you against your real project once the two steps above are done.
 
 ## SEO setup
 - `lib/siteConfig.js` — `SITE_URL` (update before deploying), plus `TOOL_PAGES` for per-page metadata.
@@ -134,14 +181,29 @@ Note: IndexNow verifies your key file over the **public internet**, so a submiss
 `localhost` will fail at the "IndexNow could not verify your key file" step even if everything is
 wired correctly — that check only succeeds once `SITE_URL` is live and deployed.
 
-### Triggering it in production
-Once deployed with the right `SITE_URL`, `INDEXNOW_KEY`, and `INDEXNOW_SUBMIT_SECRET`:
+### It now runs automatically — no manual step needed
+`scripts/postbuild-indexnow.mjs` is wired up as npm's `postbuild` hook, which always runs right after
+`next build` finishes — including on every Vercel deploy, with zero extra config. It's guarded by
+Vercel's own `VERCEL_ENV` variable so it only actually submits on real **production** deploys:
+
+| Where it runs | `VERCEL_ENV` | What happens |
+|---|---|---|
+| Your machine (`npm run build`) | not set | Skipped, logged, build unaffected |
+| Vercel preview deploy (PRs, branches) | `preview` | Skipped, logged, build unaffected |
+| Vercel production deploy | `production` | Submits all 11 URLs to IndexNow automatically |
+
+Every failure path is non-fatal by design — a slow or unreachable IndexNow API will never fail your
+actual deployment. Tested locally by simulating all three states with `VERCEL_ENV=production node
+scripts/postbuild-indexnow.mjs` (and `preview`) — confirmed each exits cleanly (code 0) either way.
+
+### Manual submission (optional — for one-off resubmits)
+Once deployed with the right `SITE_URL`, `INDEXNOW_KEY`, and `INDEXNOW_SUBMIT_SECRET`, you can still
+trigger a submission by hand anytime without a new deploy:
 ```bash
 INDEXNOW_SUBMIT_SECRET=your-secret npm run indexnow
 ```
-This submits every page on the site in one call. Run it manually after any content update, or wire it
-into your deploy process — e.g. a GitHub Action step after a successful Vercel deploy, or a
-`postbuild`/deploy-hook script that calls the same `curl` command shown above with your production URLs.
+This goes through `/api/indexnow` (unlike the automatic postbuild script, which calls IndexNow directly) —
+useful for testing that route itself, or resubmitting after an off-platform content change.
 
 ## Run locally
 ```bash

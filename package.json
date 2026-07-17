@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "postbuild": "node scripts/postbuild-indexnow.mjs",
     "start": "next start",
     "lint": "next lint",
     "indexnow": "node scripts/submit-indexnow.mjs"
@@ -13,7 +14,8 @@
     "next": "14.2.35",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "lucide-react": "^0.383.0"
+    "lucide-react": "^0.383.0",
+    "@supabase/supabase-js": "^2.45.4"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.19",
