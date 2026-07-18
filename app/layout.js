@@ -83,13 +83,15 @@ function JsonLd() {
     },
     featureList: [
       'Animated Instagram/Facebook story generator with Birthday, Quote, and Travel templates',
-      'HD JPG export of story assets',
+      'Travel route video maker with GPX/KML/GeoJSON import and video export',
+      'Animated birthday eCard maker with a zero-backend shareable link',
       'Viral Reels & TikTok script generator with Hook, Retention, and CTA framework',
-      'Multiple script tones: Controversial, Storytelling, Educational, Productivity',
-      'Instagram caption formatter with aesthetic line breaks and Unicode fonts',
-      'Live engagement / viral potential score predictor',
-      'Niche hashtag stack generator',
-      'Platform-specific caption presets for Instagram, TikTok, and YouTube Shorts',
+      'YouTube Shorts hook generator and A/B thumbnail & title previewer',
+      'Instagram grid crop previewer and seamless carousel draft tool',
+      'Free link-in-bio page builder',
+      'Downloadable influencer media kit generator',
+      'Influencer engagement rate and sponsorship rate calculator',
+      'Instagram caption formatter with aesthetic line breaks, Unicode fonts, and a live viral potential score',
     ],
     aggregateRating: {
       '@type': 'AggregateRating',
@@ -98,64 +100,11 @@ function JsonLd() {
     },
   };
 
-  const faqSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: 'Is Aesthetic Social Kit really free to use?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Yes. Every feature — the animated story generator, the Reels script builder, and the caption studio — runs entirely in your browser with no login, no signup, and no hidden paywalls.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'Do I need to install anything or create an account?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'No installation and no account are required. Open the site and start creating instantly — nothing is uploaded to a server, so your images and captions stay on your device.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'What story templates are available?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Three animated templates are included: Birthday Bash (a floating polaroid frame with sparkle particles), Minimalist Quote (a cinematic typewriter fade-in with a pulsing vignette), and Travel Vibe (a Ken Burns zoom-and-pan effect with a sliding location tag).',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'Can it write a full Reels or TikTok script for me?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Yes. Enter any topic and choose a tone — Controversial Hook, Storytelling/POV, Educational/Value Bomb, or Productivity Hack — to get a timestamped, shot-by-shot script with a multi-hook matrix, a b-roll storyboard, and a conversion CTA matrix.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'How does the Viral Potential Score work?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'The caption studio analyzes length, emoji density, line breaks, hook strength, CTA placement, and hashtag count in real time, then gives you a percentage score with specific tips to improve it before you post.',
-        },
-      },
-    ],
-  };
-
   return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
-    </>
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }}
+    />
   );
 }
 

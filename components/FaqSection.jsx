@@ -1,8 +1,25 @@
 import React from 'react';
 
 export default function FaqSection({ heading, intro, items }) {
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: items.map((item) => ({
+      '@type': 'Question',
+      name: item.q,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.a,
+      },
+    })),
+  };
+
   return (
     <div className="max-w-3xl mx-auto px-1 space-y-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
       {intro && (
         <article className="space-y-4">
           {intro.map((para, i) => (

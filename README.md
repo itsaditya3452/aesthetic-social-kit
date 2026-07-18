@@ -107,15 +107,31 @@ feature is fully built and the site builds cleanly with it included, but the act
 public-page round trip needs to be tested by you against your real project once the two steps above are done.
 
 ## SEO setup
-- `lib/siteConfig.js` — `SITE_URL` (update before deploying), plus `TOOL_PAGES` for per-page metadata.
+- `lib/siteConfig.js` — `SITE_URL` (**set to your actual live domain — see warning below**), plus
+  `TOOL_PAGES` for per-page metadata.
 - `app/layout.js` — sitewide metadata defaults, title template (`%s | Aesthetic Social Kit`), Open Graph,
-  Twitter cards, and JSON-LD structured data.
+  Twitter cards, and a sitewide `WebApplication` JSON-LD block.
+- `components/FaqSection.jsx` generates its own `FAQPage` JSON-LD directly from the same `items` it
+  renders visibly — every page's structured data is guaranteed to match what's actually on that page,
+  since they come from one source. (An earlier version hardcoded one FAQ schema in the root layout that
+  matched only the homepage's questions but got injected into every tool page too — a real mismatch
+  between structured data and visible content, which is exactly what SEO auditors flag and what Google's
+  structured data guidelines warn against. Fixed by moving FAQ schema generation into `FaqSection` itself.)
 - Every tool page exports its own `metadata` (title, description, keywords, canonical URL).
 - `app/sitemap.js` — auto-generates `/sitemap.xml` listing the home page and all tool pages.
 - `app/robots.js`, `app/opengraph-image.jsx`, `app/icon.jsx` — robots.txt, share image, favicon.
 
+### ⚠️ `SITE_URL` must exactly match your live domain
+Canonical tags, the sitemap, Open Graph tags, and IndexNow submissions all derive from `SITE_URL`. If
+it points anywhere other than the domain the site is actually deployed at (e.g. a placeholder custom
+domain you haven't attached yet, while the real site is still on `your-project.vercel.app`), every page's
+canonical tag effectively tells search engines "the real version of this lives somewhere else" — a
+domain that doesn't resolve. This can block indexing even after a successful crawl, and it's a common,
+easy-to-miss mistake. Whenever you attach a custom domain in Vercel, update `SITE_URL` to match and
+redeploy immediately.
+
 ### After deploying
-1. Update `SITE_URL` in `lib/siteConfig.js` to your live domain, then redeploy.
+1. Confirm `SITE_URL` in `lib/siteConfig.js` matches your live domain exactly, then redeploy.
 2. Submit `https://yourdomain.com/sitemap.xml` in Google Search Console and Bing Webmaster Tools.
 3. In Search Console, request indexing for each of the 6 URLs individually the first time — it speeds
    up discovery of the new pages.
