@@ -6,7 +6,7 @@ import {
   Sparkle, Cake, Flame, AlertCircle
 } from 'lucide-react';
 import {
-  initThemeParticles, drawGiftFrame, GIFT_CANVAS_W, GIFT_CANVAS_H, GIFT_REVEAL_DURATION_MS,
+  initThemeParticles, drawGiftFrame, GIFT_CANVAS_W, GIFT_CANVAS_H, getGiftRevealDuration,
 } from '../lib/birthdayGiftEngine';
 import { encodeGiftPayload, compressImageForLink, resizeImageForCanvas } from '../lib/giftLink';
 
@@ -144,10 +144,11 @@ export default function BirthdayGiftMaker() {
     };
     startTimeRef.current = performance.now();
     recorder.start();
+    const recordDuration = getGiftRevealDuration(message) + 900;
     setTimeout(() => {
       recorder.stop();
       startTimeRef.current = performance.now();
-    }, GIFT_REVEAL_DURATION_MS + 600);
+    }, recordDuration);
   };
 
   const handleDownloadVideo = () => {
