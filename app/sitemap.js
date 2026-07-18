@@ -3,14 +3,11 @@ import { SITE_URL, TOOL_PAGES } from '../lib/siteConfig';
 export default function sitemap() {
   const now = new Date();
 
-  // 1. Check karo ki kya site Vercel ke preview/sub-domain par run ho rahi hai
-  // Agar VERCEL_URL available hai toh use use karega, nahi toh aapka main SITE_URL (.com)
-  const vercelEnvUrl = process.env.NEXT_PUBLIC_VERCEL_URL || process.env.VERCEL_URL;
-  const currentBaseUrl = vercelEnvUrl 
-    ? `https://${vercelEnvUrl}` 
+  // Agar Vercel environment hai toh seedhe aapka main vercel subdomain use hoga, random branch URL nahi
+  const currentBaseUrl = process.env.VERCEL_URL 
+    ? 'https://aesthetic-social-kit.vercel.app' 
     : SITE_URL;
 
-  // 2. Tools ke saare inner pages ke entries map karein
   const toolEntries = Object.values(TOOL_PAGES).map((page) => ({
     url: `${currentBaseUrl}/${page.slug}`,
     lastModified: now,
@@ -18,7 +15,6 @@ export default function sitemap() {
     priority: 0.9,
   }));
 
-  // 3. Final array return karein jo XML generate karega
   return [
     {
       url: currentBaseUrl,
